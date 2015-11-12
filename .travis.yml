@@ -3,4 +3,4 @@ julia:
       - release
       - nightly
 after_success:
-      - codecov
+      - julia -e 'cd(Pkg.dir("MyPkg")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
