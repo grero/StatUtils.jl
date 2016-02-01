@@ -49,6 +49,11 @@ function summarize!{T<:Real}(B::AbstractBootstrapper{T})
     B.σ = std(B.values)
 end
 
+"""
+Compute bootstrap statistics `nbootstrap` times using `func`
+
+    function run_bootstrap{T}(nbootstrap::Int64,func::Function, X::Array{T,1},args...)
+"""
 function run_bootstrap{T}(nbootstrap::Int64,func::Function, X::Array{T,1},args...)
     B = Bootstrapper(T, nbootstrap, func)
     run_bootstrap!(B,X,args...)
