@@ -30,5 +30,13 @@ function test_fast_bootstrapper()
     println("Fast bootstrapper test passed")
 end
 
+function test_fdr()
+	pvalues = [0.0001, 0.0004, 0.0019, 0.0095, 0.0201, 0.0278, 0.0298, 0.0344, 0.0459, 0.3240, 0.4262, 0.5719, 0.6528, 0.7590, 1.00]
+	pidx = StatUtils.fdr(pvalues)
+	@test pidx == [1,2,3,4]
+	println("FDR test passed")
+end
+
 test_bootstrapper()
 test_fast_bootstrapper()
+test_fdr()
