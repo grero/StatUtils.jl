@@ -46,5 +46,21 @@ function fdr(pvalues::Array{Float64,1},q=0.05)
 	sidx[1:idx]
 end
 
+"""
+Group the elements of `A` according to `grouping`, returning a dictionary of type `Dict{eltype(grouping), typeof(A)}`, where each entry (k,v) is a vector `v` with the elements of `A` corresponding to group `k`.
+
+	function groupby{T1<:Any,T2<:Any}(A::AbstractArray{T1,1}, grouping::AbstractArray{T2,1})
+"""
+function groupby{T1<:Any,T2<:Any}(A::AbstractArray{T1,1}, grouping::AbstractArray{T2,1})
+	groups = Dict{T2, Array{T1,1}}()
+	for (a,g) in zip(A,grouping)
+		if !(g in keys(groups))
+			groups[g] = T1[]
+		end
+		push!(groups[g], a)
+	end
+	groups
+end
+
 end
 

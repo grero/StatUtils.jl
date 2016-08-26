@@ -37,6 +37,13 @@ function test_fdr()
 	println("FDR test passed")
 end
 
+function test_groupby()
+	groups = StatUtils.groupby([1,2,3], [1,2,3])
+	@test Dict{Int64, Array{Int64,1}}(1=>[1], 2=>[2], 3=>[3]) == groups
+	println("groupby test passed")
+end
+
 test_bootstrapper()
 test_fast_bootstrapper()
 test_fdr()
+test_groupby()
