@@ -1,4 +1,4 @@
-import Base.zero
+import Base.zero, Base.rand, Base.convert, Base.abs
 """
 Type to specify what bootstrap to run, and to hold the resulting bootstrapped values
 """
@@ -54,6 +54,11 @@ function run_bootstrap!{T}(B::AbstractBootstrapper{T}, X::Array{T,1},args...)
 end
 
 immutable ZScore
-	v::Number
+	v::Float64
 end
 
+zero(::Type{ZScore}) = ZScore(zero(Float64))
+rand(::Type{ZScore}) = randn()
+convert(::Type{ZScore}, X::Float64) = ZScore(X)
+convert(::Type{Float64}, X::ZScore) = X.v
+abs(z::ZScore) = abs(z.v)

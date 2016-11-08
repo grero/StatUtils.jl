@@ -1,6 +1,8 @@
 module StatUtils
 import StatsBase
 include("types.jl")
+export ZScore
+
 """
 Compute the spearman rank correlation between r `x1` and `x2`. Also returns a two sided p-value for the signifiance of r using a permutation test
 """
