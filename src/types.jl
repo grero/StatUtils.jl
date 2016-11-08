@@ -52,3 +52,8 @@ function run_bootstrap!{T}(B::AbstractBootstrapper{T}, X::Array{T,1},args...)
     end
     summarize!(B)
 end
+
+immutable ZScore
+	v::Number
+end
+
