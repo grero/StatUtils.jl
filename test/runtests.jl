@@ -24,6 +24,20 @@ function test_groupby()
 	println("groupby test passed")
 end
 
-test_bootstrapper()
-test_fdr()
-test_groupby()
+@testset "Bootstrapper" begin
+    test_bootstrapper()
+end
+@testset "False Discovery Rate" begin
+    test_fdr()
+end
+@testset "Group by" begin
+    test_groupby()
+end
+
+@testset "Bootstrap median" begin
+    RNG = MersenneTwister(1234)
+    x1 = rand(RNG, (1,100))
+    μ,σ = StatUtils.bootstrap_median(x1, 10_000, RNG)
+    @test μ[1] ≈ 0.42955728184002556
+    @test σ[1] ≈ 0.05440210246513024
+end
