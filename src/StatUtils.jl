@@ -6,7 +6,7 @@ export ZScore
 """
 Compute the spearman rank correlation between r `x1` and `x2`. Also returns a two sided p-value for the signifiance of r using a permutation test
 """
-function spearmanr(x1,x2,tail::Symbol=:right)
+function spearmanr(x1,x2,tail::Symbol=:right, RNG=MersenneTwister(rand(UInt32)))
     if !(tail in [:left, :right, :both])
         ArgumentError("tail must be one of :left, :right, :both")
     end
@@ -16,7 +16,7 @@ function spearmanr(x1,x2,tail::Symbol=:right)
     _x2 = copy(x2)
     N = 1000
     for i in 1:N
-        _cc = StatsBase.corspearman(x1,shuffle!(_x2))
+        _cc = StatsBase.corspearman(x1,shuffle!(RNG, _x2))
         if _cc > cc
             nnl +=1
         elseif _cc < cc
