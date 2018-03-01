@@ -34,11 +34,11 @@ function spearmanr(x1,x2,tail::Symbol=:right)
 end
 
 """
-Use the False Discovery Rate (FDR) procedure in 
+Use the False Discovery Rate (FDR) procedure in
 
-Benjamini, Y., & Hochberg, Y. (1995). Controlling the false discovery rate: a practical and powerful approach to multiple testing JR Stat Soc B 57: 289–300. 
+Benjamini, Y., & Hochberg, Y. (1995). Controlling the false discovery rate: a practical and powerful approach to multiple testing JR Stat Soc B 57: 289–300.
 
-to correct for the multiple comparisons represented by `pvalues` at level `0 < q < 1.0`. 
+to correct for the multiple comparisons represented by `pvalues` at level `0 < q < 1.0`.
 """
 function fdr(pvalues::Array{Float64,1},q=0.05)
 	sidx = sortperm(pvalues)
