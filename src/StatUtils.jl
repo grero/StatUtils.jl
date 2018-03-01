@@ -30,7 +30,7 @@ function spearmanr(x1,x2,tail::Symbol=:right)
     else
         pv = nnl/N
     end
-    pv
+    cc, pv
 end
 
 """
