@@ -41,3 +41,28 @@ end
     @test μ[1] ≈ 0.42955728184002556
     @test σ[1] ≈ 0.05440210246513024
 end
+
+@testset "Spearman pv" begin
+    #no correlation
+    RNG = MersenneTwister(1234)
+    x1 = rand(RNG, 100)
+    x2 = rand(RNG, 100)
+    cc,pv = StatUtils.spearmanr(x1,x2, :both, RNG)
+    @test cc ≈ -0.0664026402640264
+    @test pv ≈ 0.999 
+
+    #small non-significant correlation
+    RNG = MersenneTwister(1234)
+    x1 = rand(RNG, 100)
+    x2 = 0.1*x1 +  0.9*rand(RNG, 100)
+    cc,pv = StatUtils.spearmanr(x1,x2, :right, RNG)
+    @test cc ≈ 0.031035103510351034
+    @test pv ≈ 0.361
+    #strong significant correlation
+    RNG = MersenneTwister(1234)
+    x1 = rand(RNG, 100)
+    x2 = 0.5*x1 +  0.5*rand(RNG, 100)
+    cc,pv = StatUtils.spearmanr(x1,x2, :right, RNG)
+    @test cc ≈ 0.6913171317131713
+    @test pv ≈ 0.0
+end
