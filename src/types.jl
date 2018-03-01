@@ -2,15 +2,15 @@ import Base.zero, Base.rand, Base.convert, Base.abs
 """
 Type to specify what bootstrap to run, and to hold the resulting bootstrapped values
 """
-abstract AbstractBootstrapper{T}
+abstract type AbstractBootstrapper{T} end
 
-type GenericBootstrapper{T} <: AbstractBootstrapper{T}
+mutable struct GenericBootstrapper{T} <: AbstractBootstrapper{T}
     nbootstrap::Int64
     func::Function
     values::Array{T,1}
 end
 
-type Bootstrapper{T<:Real} <: AbstractBootstrapper{T}
+mutable struct Bootstrapper{T<:Real} <: AbstractBootstrapper{T}
     nbootstrap::Int64
     func::Function
     values::Array{T,1}
