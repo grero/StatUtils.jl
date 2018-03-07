@@ -62,3 +62,8 @@ rand(::Type{ZScore}) = randn()
 convert(::Type{ZScore}, X::Float64) = ZScore(X)
 convert(::Type{Float64}, X::ZScore) = X.v
 abs(z::ZScore) = abs(z.v)
+
+immutable Percentile
+    v::Float64
+    Percentile(v) = 0.0 < v < 100.0 ? new(v) : throw(ArgumentError("Percentiles must be between 0.0 and 100.0"))
+end

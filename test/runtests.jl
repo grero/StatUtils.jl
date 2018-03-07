@@ -66,3 +66,8 @@ end
     @test cc ≈ 0.6913171317131713
     @test pv ≈ 0.0
 end
+
+@testset "Percentile" begin
+    @test_throws ArgumentError Percentile(-0.1)
+    @test_throws ArgumentError Percentile(101.0)
+end
