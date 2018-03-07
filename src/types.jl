@@ -1,4 +1,4 @@
-import Base.zero, Base.rand, Base.convert, Base.abs
+import Base.zero, Base.rand, Base.convert, Base.abs, Base.typemax, Base.typemin
 """
 Type to specify what bootstrap to run, and to hold the resulting bootstrapped values
 """
@@ -67,3 +67,6 @@ immutable Percentile
     v::Float64
     Percentile(v) = 0.0 < v < 100.0 ? new(v) : throw(ArgumentError("Percentiles must be between 0.0 and 100.0"))
 end
+
+Base.typemax(::Type{Percentile}) = 100.0
+Base.typemin(::Type{Percentile}) = 0.0

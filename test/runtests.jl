@@ -70,4 +70,6 @@ end
 @testset "Percentile" begin
     @test_throws ArgumentError Percentile(-0.1)
     @test_throws ArgumentError Percentile(101.0)
+    @test typemax(Percentile) == 100.0
+    @test typemin(Percentile) == 0.0
 end
