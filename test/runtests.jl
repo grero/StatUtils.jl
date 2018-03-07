@@ -1,4 +1,4 @@
-import StatUtils
+using StatUtils
 using Base.Test
 
 function test_bootstrapper()
