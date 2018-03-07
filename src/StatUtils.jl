@@ -64,13 +64,14 @@ function groupby{T1<:Any,T2<:Any}(A::AbstractArray{T1,1}, grouping::AbstractArra
 	groups
 end
 
-function bootstrap_median(x1::AbstractArray{T,2}, n=10_000, RNG=MersenneTwister(rand(UInt32))) where T<: Real
+function bootstrap_median(x1::AbstractArray{T,2}, n=10_000, RNG=MersenneTwister(rand(UInt32)),nx=size(x1,2)) where T<: Real
     nbins, ntrials = size(x1)
     μ = zeros(nbins)
     σ² = zeros(μ)
-    xs = zeros(x1)
+    nx = min(nx, ntrials)
+    xs = zeros(size(x1,1), nx)
     for i in 1:n
-        for k in 1:ntrials
+        for k in 1:nx
             idx1 = rand(RNG, 1:ntrials)
             for j in 1:nbins
                 xs[j,k] = x1[j,idx1]
