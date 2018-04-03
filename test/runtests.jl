@@ -78,6 +78,8 @@ end
 @testset "Generalized Poisson" begin
     G = GeneralizedPoisson(1.5370664608871476,-0.2658194383776511)
     @test pdf(G,0) ≈ 0.21501092012028916
+    @test log(pdf(G,0)) ≈ logpdf(G,0)
+    @test log(pdf(G,1)) ≈ logpdf(G,1)
     @test mean(G) ≈ 1.2142857142857142
     @test var(G) ≈ 0.7578397212543557
     @test sum(pdf.(G,0:7)) ≈ 1.0000005196278676

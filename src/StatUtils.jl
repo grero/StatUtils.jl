@@ -1,7 +1,7 @@
 module StatUtils
 import StatsBase
 using Distributions
-import Distributions:pdf,mean,var
+import Distributions:pdf,logpdf, mean,var, fit_mle
 include("types.jl")
 include("generalized_poisson.jl")
 export ZScore,Percentile, GeneralizedPoisson
