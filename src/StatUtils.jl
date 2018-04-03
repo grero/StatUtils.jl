@@ -1,7 +1,10 @@
 module StatUtils
 import StatsBase
+using Distributions
+import Distributions:pdf,mean,var
 include("types.jl")
-export ZScore,Percentile
+include("generalized_poisson.jl")
+export ZScore,Percentile, GeneralizedPoisson
 
 """
 Compute the spearman rank correlation between r `x1` and `x2`. Also returns a two sided p-value for the signifiance of r using a permutation test

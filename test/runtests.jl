@@ -1,3 +1,4 @@
+using Distributions
 using StatUtils
 using Base.Test
 
@@ -72,4 +73,12 @@ end
     @test_throws ArgumentError Percentile(101.0)
     @test typemax(Percentile) == 100.0
     @test typemin(Percentile) == 0.0
+end
+
+@testset "Generalized Poisson" begin
+    G = GeneralizedPoisson(1.5370664608871476,-0.2658194383776511)
+    @test pdf(G,0) ≈ 0.21501092012028916
+    @test mean(G) ≈ 1.2142857142857142
+    @test var(G) ≈ 0.7578397212543557
+    @test sum(pdf.(G,0:7)) ≈ 1.0000005196278676
 end
