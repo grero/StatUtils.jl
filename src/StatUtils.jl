@@ -70,7 +70,7 @@ end
 function bootstrap_median(x1::AbstractArray{T,2}, n=10_000, RNG=MersenneTwister(rand(UInt32)),nx=size(x1,2)) where T<: Real
     nbins, ntrials = size(x1)
     μ = zeros(nbins)
-    σ² = zeros(μ)
+    σ² = fill!(similar(μ), 0.0)
     nx = min(nx, ntrials)
     xs = zeros(size(x1,1), nx)
     for i in 1:n
