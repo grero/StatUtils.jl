@@ -91,7 +91,7 @@ end
     RNG = MersenneTwister(1234)
     x = range(0.0, stop=1.0, length=20)
     y = 0.5 .+ 0.1*x .+ 0.3*randn(RNG, length(x))
-    μ, σ = StatUtils.bootstrap_regression(x,y;RNG=RNG)
+    μ, σ, xx = StatUtils.bootstrap_regression(x,y;RNG=RNG)
     hμ = hash(μ)
     hσ = hash(σ)
     @test hμ == 0x4893fbb4ad08ddbf

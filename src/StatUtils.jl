@@ -116,7 +116,7 @@ function bootstrap_regression(x::AbstractVector{T},y::AbstractVector{T},n=1000;R
     xx = sort(collect(keys(ym)))
     μ = [ym[_xe]/nn[_xe] for _xe in xx]
     σ = sqrt.([ys[_xe]/nn[_xe] - (ym[_xe]/nn[_xe])^2 for _xe in xx])
-    μ, σ
+    μ, σ, xx
 end
 
 end
