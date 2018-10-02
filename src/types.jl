@@ -18,7 +18,7 @@ mutable struct Bootstrapper{T<:Real} <: AbstractBootstrapper{T}
     σ::T
 end
 
-function Bootstrapper{T}(::Type{T},nbootstrap::Int64,func::Function)
+function Bootstrapper(::Type{T},nbootstrap::Int64,func::Function) where T <: Real
     #test the function
     a = func(rand(T,2))
     if length(a) > 1
@@ -27,7 +27,7 @@ function Bootstrapper{T}(::Type{T},nbootstrap::Int64,func::Function)
     Bootstrapper(nbootstrap,func,zeros(T,nbootstrap),zero(T),zero(T))
 end
 
-function summarize!{T<:Real}(B::AbstractBootstrapper{T})
+function summarize!(B::AbstractBootstrapper{T}) where T<:Real
     B.μ = mean(B.values)
     B.σ = std(B.values)
 end
@@ -37,13 +37,13 @@ Compute bootstrap statistics `nbootstrap` times using `func`
 
     function run_bootstrap{T}(nbootstrap::Int64,func::Function, X::Array{T,1},args...)
 """
-function run_bootstrap{T}(nbootstrap::Int64,func::Function, X::Array{T,1},args...;RNG=MersenneTwister(rand(UInt32)))
+function run_bootstrap(nbootstrap::Int64,func::Function, X::Array{T,1},args...;RNG=MersenneTwister(rand(UInt32))) where T <: Any
     B = Bootstrapper(T, nbootstrap, func)
     run_bootstrap!(B,X,args...;RNG=RNG)
     B
 end
 
-function run_bootstrap!{T}(B::AbstractBootstrapper{T}, X::Array{T,1},args...;RNG=MersenneTwister(rand(UInt32)))
+function run_bootstrap!(B::AbstractBootstrapper{T}, X::Array{T,1},args...;RNG=MersenneTwister(rand(UInt32))) where T <: Any
     n = length(X)
     idx = zeros(Int64,n)
     for i in 1:B.nbootstrap
@@ -53,7 +53,7 @@ function run_bootstrap!{T}(B::AbstractBootstrapper{T}, X::Array{T,1},args...;RNG
     summarize!(B)
 end
 
-immutable ZScore
+struct ZScore
 	v::Float64
 end
 
@@ -63,7 +63,7 @@ convert(::Type{ZScore}, X::Float64) = ZScore(X)
 convert(::Type{Float64}, X::ZScore) = X.v
 abs(z::ZScore) = abs(z.v)
 
-immutable Percentile
+struct Percentile
     v::Float64
     Percentile(v) = 0.0 < v < 100.0 ? new(v) : throw(ArgumentError("Percentiles must be between 0.0 and 100.0"))
 end

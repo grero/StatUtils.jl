@@ -1,5 +1,6 @@
 module StatUtils
 using SpecialFunctions
+using Random
 import StatsBase
 using Distributions
 import Distributions:pdf,logpdf, mean,var, fit_mle
@@ -57,7 +58,7 @@ Group the elements of `A` according to `grouping`, returning a dictionary of typ
 
 	function groupby{T1<:Any,T2<:Any}(A::AbstractArray{T1,1}, grouping::AbstractArray{T2,1})
 """
-function groupby{T1<:Any,T2<:Any}(A::AbstractArray{T1,1}, grouping::AbstractArray{T2,1})
+function groupby(A::AbstractArray{T1,1}, grouping::AbstractArray{T2,1}) where T1<:Any where T2<:Any
 	groups = Dict{T2, Array{T1,1}}()
 	for (a,g) in zip(A,grouping)
 		if !(g in keys(groups))
@@ -105,7 +106,7 @@ function bootstrap_regression(x::AbstractVector{T},y::AbstractVector{T},n=1000;R
         _idx = rand(RNG, 1:nx, nx)
         _x = x[_idx]
         a,b = hcat(fill!(similar(_x), 1.0), _x)\(y[_idx])
-        ye = a + b*_x
+        ye = a .+ b*_x
         for (_xe, _ye) in zip(_x, ye)
             ym[_xe] = get(ym, _xe, 0.0) + _ye
             ys[_xe] = get(ys, _xe, 0.0) + _ye*_ye

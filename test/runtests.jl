@@ -38,7 +38,7 @@ end
 
 @testset "Bootstrap median" begin
     RNG = MersenneTwister(1234)
-    x1 = rand(RNG, (1,100))
+    x1 = rand(RNG, Float64, (1,100))
     μ,σ = StatUtils.bootstrap_median(x1, 10_000, RNG)
     @test μ[1] ≈ 0.4304271018933901
     @test σ[1] ≈ 0.05446660483997713
@@ -90,7 +90,7 @@ end
     #generate data
     RNG = MersenneTwister(1234)
     x = range(0.0, stop=1.0, length=20)
-    y = 0.5 + 0.1*x + 0.3*randn(RNG, length(x))
+    y = 0.5 .+ 0.1*x .+ 0.3*randn(RNG, length(x))
     μ, σ = StatUtils.bootstrap_regression(x,y;RNG=RNG)
     hμ = hash(μ)
     hσ = hash(σ)
