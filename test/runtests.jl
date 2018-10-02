@@ -94,6 +94,6 @@ end
     μ, σ = StatUtils.bootstrap_regression(x,y;RNG=RNG)
     hμ = hash(μ)
     hσ = hash(σ)
-    @test hμ ==0x4893fbb4ad08ddbf
+    @test hμ == 0x4893fbb4ad08ddbf
     @test hσ == 0x82cc75d75f2c5470
 end
