@@ -93,5 +93,30 @@ function bootstrap_median(x1::AbstractArray{T,2}, n=10_000, RNG=MersenneTwister(
     μ, σ
 end
 
+"""
+Bootstrap linear regression of `y` on `x` by performing regression `n` times on random samples from `x` and `y`.
+"""
+function bootstrap_regression(x::AbstractVector{T},y::AbstractVector{T},n=1000;RNG=MersenneTwister(rand(UInt32))) where T <: Real
+    nx = length(x)
+    ym = Dict{T,T}()
+    ys = Dict{T,T}()
+    nn = Dict{T,Int64}()
+    for i in 1:n
+        _idx = rand(RNG, 1:nx, nx)
+        _x = x[_idx]
+        a,b = hcat(fill!(similar(_x), 1.0), _x)\(y[_idx])
+        ye = a + b*_x
+        for (_xe, _ye) in zip(_x, ye)
+            ym[_xe] = get(ym, _xe, 0.0) + _ye
+            ys[_xe] = get(ys, _xe, 0.0) + _ye*_ye
+            nn[_xe]  = get(nn, _xe, 0) + 1
+        end
+    end
+    xx = sort(collect(keys(ym)))
+    μ = [ym[_xe]/nn[_xe] for _xe in xx]
+    σ = sqrt.([ys[_xe]/nn[_xe] - (ym[_xe]/nn[_xe])^2 for _xe in xx])
+    μ, σ
+end
+
 end
 
