@@ -7,8 +7,8 @@ function test_bootstrapper()
     RNG = MersenneTwister(1234)
     x = rand(RNG, 1000)
     B = StatUtils.run_bootstrap(1000,sum,x;RNG=RNG)
-    @test B.μ ≈ 497.27583345469264
-    @test B.σ ≈ 9.145631811573429
+    @test B.μ ≈ 496.38737230306054
+    @test B.σ ≈ 9.052877314367253 
     println("Bootstrapper test passed")
 
 end
