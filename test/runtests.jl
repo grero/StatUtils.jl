@@ -1,13 +1,14 @@
 using Distributions
 using StatUtils
-using Base.Test
+using Test
+using Random
 
 function test_bootstrapper()
-    srand(1234)
-    x = rand(1000)
-    B = StatUtils.run_bootstrap(1000,sum,x)
-    @test_approx_eq B.μ 497.27583345469264
-    @test_approx_eq B.σ 9.145631811573429
+    RNG = MersenneTwister(1234)
+    x = rand(RNG, 1000)
+    B = StatUtils.run_bootstrap(1000,sum,x;RNG=RNG)
+    @test B.μ ≈ 497.27583345469264
+    @test B.σ ≈ 9.145631811573429
     println("Bootstrapper test passed")
 
 end
@@ -83,4 +84,13 @@ end
     @test mean(G) ≈ 1.2142857142857142
     @test var(G) ≈ 0.7578397212543557
     @test sum(pdf.(G,0:7)) ≈ 1.0000005196278676
+end
+
+@testset "Bootstrap regression" begin
+    #generate data
+    RNG = MersenneTwister(1234)
+    x = range(0.0, stop=1.0, length=100)
+    y = 0.5 + 0.1*x + 0.3*randn(RNG, 100)
+    μ, σ = Statutils.bootstrap_regression(x,y)
+    @show μ, σ
 end
