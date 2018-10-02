@@ -37,17 +37,17 @@ Compute bootstrap statistics `nbootstrap` times using `func`
 
     function run_bootstrap{T}(nbootstrap::Int64,func::Function, X::Array{T,1},args...)
 """
-function run_bootstrap{T}(nbootstrap::Int64,func::Function, X::Array{T,1},args...)
+function run_bootstrap{T}(nbootstrap::Int64,func::Function, X::Array{T,1},args...;RNG=MersenneTwister(rand(UInt32)))
     B = Bootstrapper(T, nbootstrap, func)
-    run_bootstrap!(B,X,args...)
+    run_bootstrap!(B,X,args...;RNG=RNG)
     B
 end
 
-function run_bootstrap!{T}(B::AbstractBootstrapper{T}, X::Array{T,1},args...)
+function run_bootstrap!{T}(B::AbstractBootstrapper{T}, X::Array{T,1},args...;RNG=MersenneTwister(rand(UInt32)))
     n = length(X)
     idx = zeros(Int64,n)
     for i in 1:B.nbootstrap
-        rand!(idx,1:n)
+        rand!(RNG, idx,1:n)
         B.values[i] = B.func(X[idx],args...)
     end
     summarize!(B)
