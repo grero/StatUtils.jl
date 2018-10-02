@@ -1,4 +1,5 @@
 module StatUtils
+using SpecialFunctions
 import StatsBase
 using Distributions
 import Distributions:pdf,logpdf, mean,var, fit_mle
