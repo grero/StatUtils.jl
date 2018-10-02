@@ -40,8 +40,8 @@ end
     RNG = MersenneTwister(1234)
     x1 = rand(RNG, (1,100))
     μ,σ = StatUtils.bootstrap_median(x1, 10_000, RNG)
-    @test μ[1] ≈ 0.42955728184002556
-    @test σ[1] ≈ 0.05440210246513024
+    @test μ[1] ≈ 0.4304271018933901
+    @test σ[1] ≈ 0.05446660483997713
 end
 
 @testset "Spearman pv" begin
