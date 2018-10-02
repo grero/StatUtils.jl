@@ -1,6 +1,7 @@
 module StatUtils
 using SpecialFunctions
 using Random
+using Optim
 import StatsBase
 using Distributions
 import Distributions:pdf,logpdf, mean,var, fit_mle
@@ -117,6 +118,16 @@ function bootstrap_regression(x::AbstractVector{T},y::AbstractVector{T},n=1000;R
     μ = [ym[_xe]/nn[_xe] for _xe in xx]
     σ = sqrt.([ys[_xe]/nn[_xe] - (ym[_xe]/nn[_xe])^2 for _xe in xx])
     μ, σ, xx
+end
+
+"""
+Regress `y` onto `x` by using the L₁ norm
+"""
+function robust_regression(x::AbstractVector{T}, y::AbstractVector{T},β0=rand(Float64,2)) where T <: Real
+    xt = [fill!(similar(x), one(T)) x]
+    func(β) = sum(abs, y .- xt*β)
+    q = optimize(func, β0) 
+    q.minimizer
 end
 
 end

@@ -97,3 +97,13 @@ end
     @test hμ == 0x4893fbb4ad08ddbf
     @test hσ == 0x82cc75d75f2c5470
 end
+
+@testset "Robust regression" begin
+    RNG = MersenneTwister(1234)
+    x = range(0.0, stop=1.0, length=20)
+    y = 0.5 .+ 0.1*x .+ 0.3*randn(RNG, length(x))
+    β0 = rand(RNG, Float64, 2)
+    β = StatUtils.robust_regression(x,y, β0)
+    @test β[1] ≈ 0.45112010089989046
+    @test β[2] ≈ 0.17443229028138146
+end
