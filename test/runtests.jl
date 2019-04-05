@@ -112,9 +112,10 @@ end
     x = [1,3,3,1,5,7,7,1,5]
     y = StatUtils.compress(x)
     @test y == [1,2,2,1,3,4,4,1,3]
-    RNG = MersenneTwister(1234)
-    X = rand(3,4,10,6)
-    grouping = rand(1:2, 10)
+    X = fill(0.0, 3,4,10,6)
+    grouping = fill(0, 10)
+    grouping[1:5] .= 1
+    grouping[6:10] .= 2
     X[:,:,findall(grouping.==1),:] .= 1.0
     X[:,:,findall(grouping.==2),:] .= 2.0
     μ = mean(X, grouping)
