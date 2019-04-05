@@ -160,3 +160,17 @@ function Statistics.mean(x::AbstractArray{T}, grouping::AbstractVector{T2}) wher
     μ
 end
 
+"""
+Compress the values in `x` by finding the smallest range that encompases all of `x` and repacing each value in `x` by its index into this range.
+"""
+function compress(x::AbstractArray{T}) where T <: Integer
+    groups = unique(x)
+    sort!(groups)
+    y = fill!(similar(x), zero(T))
+    for (i,_x) in enumerate(x)
+        y[i] = findfirst(g->_x==g, groups)
+    end
+    y
+end
+
+end
