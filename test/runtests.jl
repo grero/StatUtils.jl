@@ -108,6 +108,15 @@ end
     @test β[2] ≈ 0.17443229028138146
 end
 
+
+@testset "Angular histogram" begin
+    θ = [0.0, π/4, π/2, -π, -π/4, -π/2, -3*π/4]
+    counts, binidx, bins = StatUtils.angular_histogram(θ, π/4)
+    @test bins ≈ [-π, -3*π/4, -π/2, -π/4, 0.0, π/4, π/2, 3π/4]
+    @test counts == [1, 1, 1, 1, 1, 1, 1, 0]
+    @test binidx == [5, 6, 7, 1, 4, 3, 2]
+end
+
 @testset "Grouping" begin
     x = [1,3,3,1,5,7,7,1,5]
     y = StatUtils.compress(x)

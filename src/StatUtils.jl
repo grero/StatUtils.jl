@@ -8,6 +8,7 @@ using Distributions
 import Distributions:pdf,logpdf, mean,var, fit_mle
 include("types.jl")
 include("generalized_poisson.jl")
+include("hist.jl")
 export ZScore,Percentile, GeneralizedPoisson
 
 """
