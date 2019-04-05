@@ -1,6 +1,6 @@
 language: julia
 julia:
-      - release
+      - 1.0
       - nightly
 after_success:
       - julia -e 'cd(Pkg.dir("StatUtils")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'

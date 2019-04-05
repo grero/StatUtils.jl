@@ -107,3 +107,19 @@ end
     @test β[1] ≈ 0.45112010089989046
     @test β[2] ≈ 0.17443229028138146
 end
+
+@testset "Grouping" begin
+    x = [1,3,3,1,5,7,7,1,5]
+    y = StatUtils.compress(x)
+    @test y == [1,2,2,1,3,4,4,1,3]
+    X = fill(0.0, 3,4,10,6)
+    grouping = fill(0, 10)
+    grouping[1:5] .= 1
+    grouping[6:10] .= 2
+    X[:,:,findall(grouping.==1),:] .= 1.0
+    X[:,:,findall(grouping.==2),:] .= 2.0
+    μ = mean(X, grouping)
+    @test size(μ) == (3,4,2,6)
+    @test μ[:,:,1,:] ≈ fill(1.0, 3,4,6)
+    @test μ[:,:,2,:] ≈ fill(2.0, 3,4,6)
+end
