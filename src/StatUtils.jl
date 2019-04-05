@@ -127,7 +127,7 @@ Regress `y` onto `x` by using the L₁ norm
 function robust_regression(x::AbstractVector{T}, y::AbstractVector{T},β0=rand(Float64,2)) where T <: Real
     xt = [fill!(similar(x), one(T)) x]
     func(β) = sum(abs, y .- xt*β)
-    q = optimize(func, β0) 
+    q = optimize(func, β0)
     q.minimizer
 end
 
