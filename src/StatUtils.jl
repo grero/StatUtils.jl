@@ -1,6 +1,7 @@
 module StatUtils
 using SpecialFunctions
 using Random
+using Statistics
 using Optim
 import StatsBase
 using Distributions
@@ -127,9 +128,50 @@ Regress `y` onto `x` by using the L₁ norm
 function robust_regression(x::AbstractVector{T}, y::AbstractVector{T},β0=rand(Float64,2)) where T <: Real
     xt = [fill!(similar(x), one(T)) x]
     func(β) = sum(abs, y .- xt*β)
-    q = optimize(func, β0) 
+    q = optimize(func, β0)
     q.minimizer
 end
 
+"""
+Compute the mean of each group as indicated by `grouping`.
+"""
+function Statistics.mean(x::AbstractArray{T}, grouping::AbstractVector{T2}) where T <: Real where T2 <: Integer
+    ng = length(grouping)
+    sx = size(x)
+    dim = findfirst(sx.==ng)
+    spre = sx[1:dim-1]
+    spost = sx[dim+1:end]
+    if dim == nothing
+        error("`grouping` is not compatible with any dimension of `x`")
+    end
+    _grouping = compress(grouping)
+    ngroups = maximum(_grouping)
+    outsize = (sx[1:dim-1]..., ngroups, sx[dim+1:end]...)
+    μ = fill(zero(T),outsize)
+    counts = fill(0, outsize)
+    for Ipost in CartesianIndices(spost)
+        for i in axes(x,dim)
+            for Ipre in CartesianIndices(spre)
+                μ[Ipre,_grouping[i], Ipost] += x[Ipre, i, Ipost]
+                counts[Ipre, _grouping[i], Ipost] += 1
+            end
+        end
+    end
+    μ ./= counts
+    μ
 end
 
+"""
+Compress the values in `x` by finding the smallest range that encompases all of `x` and repacing each value in `x` by its index into this range.
+"""
+function compress(x::AbstractArray{T}) where T <: Integer
+    groups = unique(x)
+    sort!(groups)
+    y = fill!(similar(x), zero(T))
+    for (i,_x) in enumerate(x)
+        y[i] = findfirst(g->_x==g, groups)
+    end
+    y
+end
+
+end
