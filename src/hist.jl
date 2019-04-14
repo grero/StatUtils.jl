@@ -1,7 +1,7 @@
 """
 Compute a histogram of the angles `θ` using equally sized bins spanning [-π,π]
 """
-function angular_histogram(θ::AbstractVector{Float64}, Δθ::Real)
+function angular_histogram(θ::AbstractVector{T}, Δθ::Real) where T <: Real
     nbins = round(Int64,2π/Δθ)
     bins = collect(range(0.0, step=Δθ,length=div(nbins,2)))
     append!(bins, range(-pi, step=Δθ, length=div(nbins,2)))
