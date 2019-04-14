@@ -89,13 +89,12 @@ end
 @testset "Bootstrap regression" begin
     #generate data
     RNG = MersenneTwister(1234)
-    x = range(0.0, stop=1.0, length=20)
-    y = 0.5 .+ 0.1*x .+ 0.3*randn(RNG, length(x))
+    x = range(0.0, stop=1.0, length=50)
+    y = 0.5 .+ 0.5*x .+ 0.05*randn(RNG, length(x))
     μ, σ, xx = StatUtils.bootstrap_regression(x,y;RNG=RNG)
-    hμ = hash(μ)
-    hσ = hash(σ)
-    @test hμ == 0x4893fbb4ad08ddbf
-    @test hσ == 0x82cc75d75f2c5470
+    sse = sum(abs2, μ-y)
+    sq = sum(abs2, y .- 0.5)
+    @test sse/sq < 0.05
 end
 
 @testset "Robust regression" begin
