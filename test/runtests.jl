@@ -8,7 +8,7 @@ function test_bootstrapper()
     x = rand(RNG, 1000)
     B = StatUtils.run_bootstrap(1000,sum,x;RNG=RNG)
     @test B.μ ≈ 496.38737230306054
-    @test B.σ ≈ 9.052877314367253 
+    @test B.σ ≈ 9.052877314367253
     println("Bootstrapper test passed")
 
 end
@@ -51,7 +51,7 @@ end
     x2 = rand(RNG, 100)
     cc,pv = StatUtils.spearmanr(x1,x2, :both, RNG)
     @test cc ≈ -0.0664026402640264
-    @test pv ≈ 0.999 
+    @test pv ≈ 0.999
 
     #small non-significant correlation
     RNG = MersenneTwister(1234)
