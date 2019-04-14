@@ -125,10 +125,12 @@ end
     grouping = fill(0, 10)
     grouping[1:5] .= 1
     grouping[6:10] .= 2
-    X[:,:,findall(grouping.==1),:] .= 1.0
-    X[:,:,findall(grouping.==2),:] .= 2.0
-    μ = mean(X, grouping)
+    X[:,:,findall(grouping.==1),:] .= reshape([1.0,2.0,3.0,4.0,5.0], 1,1,5,1)
+    X[:,:,findall(grouping.==2),:] .= reshape([6.0, 7.0, 8.0, 9.0, 10.0], 1, 1, 5,1)
+    sidx = [7, 10, 2, 5, 8, 6, 1, 3, 9, 4]
+    X = X[:,:,sidx,:]
+    μ = mean(X, grouping[sidx])
     @test size(μ) == (3,4,2,6)
-    @test μ[:,:,1,:] ≈ fill(1.0, 3,4,6)
-    @test μ[:,:,2,:] ≈ fill(2.0, 3,4,6)
+    @test μ[:,:,1,:] ≈ fill(3.0, 3,4,6)
+    @test μ[:,:,2,:] ≈ fill(8.0, 3,4,6)
 end
