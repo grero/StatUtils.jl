@@ -147,13 +147,13 @@ function Statistics.mean(x::AbstractArray{T}, grouping::AbstractVector{T2}) wher
     _grouping = compress(grouping)
     ngroups = maximum(_grouping)
     outsize = (sx[1:dim-1]..., ngroups, sx[dim+1:end]...)
-    μ = fill(zero(T),outsize)
-    counts = fill(0, outsize)
+    μ = fill(0.0,outsize)
+    counts = fill(0.0, outsize)
     for Ipost in CartesianIndices(spost)
         for i in axes(x,dim)
             for Ipre in CartesianIndices(spre)
                 μ[Ipre,_grouping[i], Ipost] += x[Ipre, i, Ipost]
-                counts[Ipre, _grouping[i], Ipost] += 1
+                counts[Ipre, _grouping[i], Ipost] += 1.0
             end
         end
     end
