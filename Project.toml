@@ -1,7 +1,7 @@
 name = "StatUtils"
 uuid = "3d8592d6-65e1-5f96-8dec-2daa08481768"
 author = ["Roger Herikstad <roger.herikstad@gmail.com"]
-version = "0.3.1"
+version = "0.4.0"
 
 [deps]
 Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
