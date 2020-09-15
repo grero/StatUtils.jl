@@ -1,14 +1,14 @@
 using Distributions
 using StatUtils
 using Test
-using Random
+using StableRNGs
 
 function test_bootstrapper()
-    RNG = MersenneTwister(1234)
+    RNG = StableRNG(1234)
     x = rand(RNG, 1000)
     B = StatUtils.run_bootstrap(1000,sum,x;RNG=RNG)
-    @test B.μ ≈ 496.38737230306054
-    @test B.σ ≈ 9.052877314367253
+    @test B.μ ≈ 508.1411134730461
+    @test B.σ ≈ 9.045400206380133
     println("Bootstrapper test passed")
 
 end
@@ -37,35 +37,35 @@ end
 end
 
 @testset "Bootstrap median" begin
-    RNG = MersenneTwister(1234)
+    RNG = StableRNG(1234)
     x1 = rand(RNG, Float64, (1,100))
     μ,σ = StatUtils.bootstrap_median(x1, 10_000, RNG)
-    @test μ[1] ≈ 0.4304271018933901
-    @test σ[1] ≈ 0.05446660483997713
+    @test μ[1] ≈ 0.4977072659335834
+    @test σ[1] ≈ 0.04304170028498684
 end
 
 @testset "Spearman pv" begin
     #no correlation
-    RNG = MersenneTwister(1234)
+    RNG = StableRNG(1234)
     x1 = rand(RNG, 100)
     x2 = rand(RNG, 100)
     cc,pv = StatUtils.spearmanr(x1,x2, :both, RNG)
-    @test cc ≈ -0.0664026402640264
+    @test cc ≈ -0.023438343834383438
     @test pv ≈ 0.999
 
     #small non-significant correlation
-    RNG = MersenneTwister(1234)
+    RNG = StableRNG(1234)
     x1 = rand(RNG, 100)
     x2 = 0.1*x1 +  0.9*rand(RNG, 100)
     cc,pv = StatUtils.spearmanr(x1,x2, :right, RNG)
-    @test cc ≈ 0.031035103510351034
-    @test pv ≈ 0.361
+    @test cc ≈ 0.09610561056105611
+    @test pv ≈ 0.189
     #strong significant correlation
-    RNG = MersenneTwister(1234)
+    RNG = StableRNG(1234)
     x1 = rand(RNG, 100)
     x2 = 0.5*x1 +  0.5*rand(RNG, 100)
     cc,pv = StatUtils.spearmanr(x1,x2, :right, RNG)
-    @test cc ≈ 0.6913171317131713
+    @test cc ≈ 0.6623702370237023
     @test pv ≈ 0.0
 end
 
@@ -88,7 +88,7 @@ end
 
 @testset "Bootstrap regression" begin
     #generate data
-    RNG = MersenneTwister(1234)
+    RNG = StableRNG(1234)
     x = range(0.0, stop=1.0, length=50)
     y = 0.5 .+ 0.5*x .+ 0.05*randn(RNG, length(x))
     μ, σ, xx = StatUtils.bootstrap_regression(x,y;RNG=RNG)
@@ -98,13 +98,13 @@ end
 end
 
 @testset "Robust regression" begin
-    RNG = MersenneTwister(1234)
+    RNG = StableRNG(1234)
     x = range(0.0, stop=1.0, length=20)
     y = 0.5 .+ 0.1*x .+ 0.3*randn(RNG, length(x))
     β0 = rand(RNG, Float64, 2)
     β = StatUtils.robust_regression(x,y, β0)
-    @test β[1] ≈ 0.45112010089989046
-    @test β[2] ≈ 0.17443229028138146
+    @test β[1] ≈ 0.23571370032430217
+    @test β[2] ≈ 0.38013900282542895
 end
 
 
